@@ -368,7 +368,7 @@ module Embulk
           assert_equal expected, converter.call(timestamp)
 
           converter = ValueConverterFactory.new(
-            SCHEMA_TYPE, 'DATETIME', timezone: 'Asia/Tokyo'
+            SCHEMA_TYPE, 'TIME', timezone: 'Asia/Tokyo'
           ).create_converter
           assert_equal nil, converter.call(nil)
           timestamp = Time.parse("2016-02-25 15:00:00.500000 +00:00")
