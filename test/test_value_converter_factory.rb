@@ -270,15 +270,6 @@ module Embulk
           assert_equal "03:22:00.000000", converter.call("3:22 AM")
           assert_equal "15:22:00.000000", converter.call("15:22")
           assert_equal "10:00:00.000000", converter.call("2024-07-24 10:00")
-
-          converter = ValueConverterFactory.new(
-            SCHEMA_TYPE, 'TIME', timezone: 'Asia/Tokyo'
-          ).create_converter
-          assert_equal nil, converter.call(nil)
-          timestamp = Time.parse("2016-02-25 00:00:00.500000 +00:00")
-          expected = "09:00:00.500000"
-          assert_equal expected, converter.call(timestamp)
-
         end
 
         def test_record
@@ -364,6 +355,24 @@ module Embulk
           assert_equal nil, converter.call(nil)
           timestamp = Time.parse("2016-02-25 15:00:00.500000 +00:00")
           expected = "2016-02-26 00:00:00.500000"
+          assert_equal expected, converter.call(timestamp)
+
+          assert_raise { converter.call('foo') }
+        end
+
+        def test_time
+          converter = ValueConverterFactory.new(SCHEMA_TYPE, 'TIME').create_converter
+          assert_equal nil, converter.call(nil)
+          timestamp = Time.parse("2016-02-26 00:00:00.500000 +00:00")
+          expected = "00:00:00.500000"
+          assert_equal expected, converter.call(timestamp)
+
+          converter = ValueConverterFactory.new(
+            SCHEMA_TYPE, 'DATETIME', timezone: 'Asia/Tokyo'
+          ).create_converter
+          assert_equal nil, converter.call(nil)
+          timestamp = Time.parse("2016-02-25 15:00:00.500000 +00:00")
+          expected = "00:00:00.500000"
           assert_equal expected, converter.call(timestamp)
 
           assert_raise { converter.call('foo') }
