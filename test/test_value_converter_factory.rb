@@ -263,10 +263,7 @@ module Embulk
         end
 
         def test_time
-          converter = ValueConverterFactory.new(
-            SCHEMA_TYPE, 'TIME',
-            timestamp_format: '%H:%M:%S'
-          ).create_converter
+          converter = ValueConverterFactory.new(SCHEMA_TYPE, 'TIME').create_converter
           assert_equal nil, converter.call(nil)
           assert_equal "00:03:22.000000", converter.call("00:03:22")
           assert_equal "15:22:00.000000", converter.call("3:22 PM")
