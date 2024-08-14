@@ -265,9 +265,14 @@ module Embulk
         def test_time
           converter = ValueConverterFactory.new(SCHEMA_TYPE, 'TIME').create_converter
           assert_equal nil, converter.call(nil)
-          assert_equal "00:03:22", converter.call("00:03:22")
+          assert_equal "00:03:22.000000", converter.call("00:03:22")
           assert_equal "15:22:00.000000", converter.call("3:22 PM")
           assert_equal "03:22:00.000000", converter.call("3:22 AM")
+
+          converter = ValueConverterFactory.new(
+            SCHEMA_TYPE, 'TIME', timezone: 'Asia/Tokyo'
+          ).create_converter
+          assert_equal "15:00:01.000000", converter.call("15:00:01")
 
           # Users must care of BQ datetime format by themselves with no timestamp_format
           converter = ValueConverterFactory.new(SCHEMA_TYPE, 'TIME').create_converter

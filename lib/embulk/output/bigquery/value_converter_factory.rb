@@ -225,19 +225,19 @@ module Embulk
               }
             end
           when 'TIME'
-            if @timestamp_format
-             Proc.new {|val|
-               next nil if val.nil?
-               with_typecast_error(val) do |val|
-                 TimeWithZone.set_zone_offset(Time.parse(val), zone_offset).strftime("%H:%M:%S.%6N")
-               end
-             }
-           else
-             Proc.new {|val|
-               next nil if val.nil?
-               val # Users must care of BQ timestamp format
-             }
-           end
+            # if @timestamp_format
+            Proc.new {|val|
+              next nil if val.nil?
+              with_typecast_error(val) do |val|
+                TimeWithZone.set_zone_offset(Time.parse(val), zone_offset).strftime("%H:%M:%S.%6N")
+              end
+            }
+          # #  else
+          # #    Proc.new {|val|
+          # #      next nil if val.nil?
+          # #      val # Users must care of BQ timestamp format
+          # #    }
+          #  end
           when 'RECORD'
             Proc.new {|val|
               next nil if val.nil?
