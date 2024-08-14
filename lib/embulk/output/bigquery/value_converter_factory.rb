@@ -235,7 +235,7 @@ module Embulk
             else
               Proc.new {|val|
                 next nil if val.nil?
-                  Time.parse(val).strftime("%H:%M:%S.%6N")
+                Time.parse(val).strftime("%H:%M:%S.%6N")
               }
             end
           when 'RECORD'
