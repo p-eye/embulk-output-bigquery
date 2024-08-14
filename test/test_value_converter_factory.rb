@@ -265,7 +265,7 @@ module Embulk
         def test_time
           converter = ValueConverterFactory.new(SCHEMA_TYPE, 'TIME').create_converter
           assert_equal nil, converter.call(nil)
-          assert_equal "00:03:22.000000", converter.call("00:03:22")
+          assert_equal "00:03:22", converter.call("00:03:22")
           assert_equal "15:22:00.000000", converter.call("3:22 PM")
           assert_equal "03:22:00.000000", converter.call("3:22 AM")
 
